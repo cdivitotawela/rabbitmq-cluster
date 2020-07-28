@@ -9,8 +9,8 @@ services:
       RABBITMQ_ERLANG_COOKIE: 'ah38qsb2qH242rd'
       RABBITMQ_NODE_NAME: 'rabbitmq1'
     ports:
-      - "5672"
-      - "15672:15672"
+      - '5672'
+      - '15672:15672'
       - '4369:4369'
       - '35672-35682'
       - '25672'
@@ -25,8 +25,8 @@ services:
       RABBITMQ_ERLANG_COOKIE: 'ah38qsb2qH242rd'
       RABBITMQ_NODE_NAME: 'rabbitmq2'
     ports:
-      - "5672"
-      - "15672"
+      - '5672'
+      - '15672'
       - '4369'
       - '35672-35682'
       - '25672'
@@ -41,8 +41,8 @@ services:
       RABBITMQ_ERLANG_COOKIE: 'ah38qsb2qH242rd'
       RABBITMQ_NODE_NAME: 'rabbitmq3'
     ports:
-      - "5672"
-      - "15672"
+      - '5672'
+      - '15672'
       - '4369'
       - '35672-35682'
       - '25672'
