@@ -1,50 +1,52 @@
 ---
 version: "3"
 services:
-  rabbitmq1:
-    image: rabbitmq:3.8.5-management
-    container_name: rabbitmq1
-    hostname: rabbitmq1
+  mq01:
+    image: "rabbitmq:3.8.7-management"
+    container_name: 'mq01.rabbit.ops'
+    hostname: 'mq01.rabbit.ops'
     environment:
       RABBITMQ_ERLANG_COOKIE: 'ah38qsb2qH242rd'
-      RABBITMQ_NODE_NAME: 'rabbitmq1'
+      RABBITMQ_NODE_NAME: 'mq01.rabbit.ops'
+      RABBITMQ_USE_LONGNAME: "true"
     ports:
-      - '5672'
+      - '5672:5672'
       - '15672:15672'
       - '4369:4369'
-      - '35672-35682'
-      - '25672'
     volumes:
       - "./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
 
-  rabbitmq2:
-    image: rabbitmq:3.8.5-management
-    container_name: rabbitmq2
-    hostname: rabbitmq2
+  mq02:
+    image: rabbitmq:3.8.7-management
+    container_name: 'mq02.rabbit.ops'
+    hostname: 'mq02.rabbit.ops'
     environment:
       RABBITMQ_ERLANG_COOKIE: 'ah38qsb2qH242rd'
-      RABBITMQ_NODE_NAME: 'rabbitmq2'
+      RABBITMQ_NODE_NAME: 'mq02.rabbit.ops'
+      RABBITMQ_USE_LONGNAME: "true"
+    command: ["/tmp/wait-for.sh"]
     ports:
       - '5672'
       - '15672'
       - '4369'
-      - '35672-35682'
-      - '25672'
     volumes:
       - "./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
+      - "./wait-for.sh:/tmp/wait-for.sh"
 
-  rabbitmq3:
-    image: rabbitmq:3.8.5-management
-    container_name: rabbitmq3
-    hostname: rabbitmq3
+  mq03:
+    image: rabbitmq:3.8.7-management
+    container_name: 'mq03.rabbit.ops'
+    hostname: 'mq03.rabbit.ops'
     environment:
       RABBITMQ_ERLANG_COOKIE: 'ah38qsb2qH242rd'
-      RABBITMQ_NODE_NAME: 'rabbitmq3'
+      RABBITMQ_NODE_NAME: 'mq03.rabbit.ops'
+      RABBITMQ_USE_LONGNAME: "true"
+    command: ["/tmp/wait-for.sh"]
     ports:
       - '5672'
       - '15672'
       - '4369'
-      - '35672-35682'
-      - '25672'
     volumes:
       - "./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
+      - "./wait-for.sh:/tmp/wait-for.sh"
+

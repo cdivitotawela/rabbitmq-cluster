@@ -1,72 +1,40 @@
 # RabbitMQ Compose Cluster
 
-Simple RabbitMQ cluster using docker-compose with config file peer discovery. 
+Simple RabbitMQ cluster using docker-compose with config file peer discovery.
+
+## Architecture
+
+Compose file creates a cluster with following architecture. Currently cluster only container three RabbitMQ nodes.
+
+![cluster-architecture](architecture.svg)
 
 ## Starting Cluster
 
-Start the compose stack with `docker-compose up -d`. Watch the logs to observe the cluster formation. Each RabbitMQ server waits for random time before start 
-joining cluster.
+Start the compose stack with `docker-compose up -d`. 
+
+Server `mq01.rabbit.ops` is the primary server when starting. Other servers wait for the mq01 server to complete the start.
+RabbitMQ waits random time before joining the cluster with other nodes. However this method is not reliable. So `wait-for.sh` is used to pause other server
+startup until primary server start and healthy. 
+
 
 ## Management Web
 
 Access the management ui with http://127.0.0.1:15672/ using the username and password configured in rabbitmq.conf file
 
-## Problems
+## Environment Variables
 
-When starting the cluster initially there can be a race condition even with random timing when using the peer discovering by config file. Possibly new docker-entry.sh
-can be used to control the management of wait times.
+RabbitMQ server
+- `RABBITMQ_ERLANG_COOKIE` Set the cookie for cluster formation. All nodes in the cluster must have same cookie value
+- `RABBITMQ_NODE_NAME` Set the node name. This is used when communicating with other nodes
+- `RABBITMQ_USE_LONGNAME` Cluster is setup with FQDN and requires setting to true
+
+Wait-for script
+- `PRIMARY_SERVER_HOST` Hostname of the primary server. Default is mq01.rabbit.ops
+- `PRIMARY_SERVER_PORT` API port for the primary server. Default is 15672
+- `PRIMARY_SERVER_USER` Admin user for the primary API server. Defaul is admin
+- `PRIMARY_SERVER_PASSWORD` Admin user password for primary API server. Defaul is rabbit
 
 ## TODO
 - Introduce TLS certificates
 - Python client for additional management
 - Unit tests for cluster
-
-## Cluster Using Multiple Nodes
-
-When a RabbitMQ cluster is setup using docker with multiple VMs then DNS is very important. It is important to set the FQDN in docker hostname so that RabbitMQ
-will use the correct domain when trying to reach other nodes. If not RabbitMQ append default localdomain when searching for peers. Following is tested compose file
-that can be used to start containers in each node.
-
-Must have FQDN in container hostname. This will configure the domain for the container. Node name will be just hostnames without domain.
-```yaml
-version: "3"
-services:
-  rabbitmq:
-    image: "rabbitmq:3.8.5-management"
-    container_name: "rabbitmq1"
-    hostname: "rabbitmq1.mydomain.org"
-    environment:
-      RABBITMQ_ERLANG_COOKIE: 'cookiemaster'
-      RABBITMQ_NODE_NAME: "rabbitmq1"
-      RABBITMQ_USE_LONGNAME: 'true'
-    ports:
-      - '5672:5672'
-      - '15672:15672'
-      - '4369:4369'
-      - '35672-35682':35672-35682
-      - '25672:25672'
-    volumes:
-      - "FILE_ON_HOST:/etc/rabbitmq/rabbitmq.conf"
-```
-
-Must have FQDN in peer configuration
-```ini
-# Disable guest user
-loopback_users.guest = false
-
-# Configure admin user
-default_user = admin
-default_pass = replaceWithStrongPassword
-default_user_tags.administrator = true
-default_permissions.configure = .*
-default_permissions.read = .*
-default_permissions.write = .*
-
-# Cluster peer discovery. Use config file.
-# This does not require all nodes. Having at least one running node enough.
-# Each node wait random time before checking other nodes so its good to have all nodes configured
-# for initial cluster
-cluster_formation.peer_discovery_backend = classic_config
-cluster_formation.classic_config.nodes.1 = rabbit@rabbitmq1.mydomain.org
-cluster_formation.classic_config.nodes.1 = rabbit@rabbitmq2.mydomain.org
-```
