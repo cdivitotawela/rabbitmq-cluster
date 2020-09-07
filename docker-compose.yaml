@@ -11,10 +11,21 @@ services:
       RABBITMQ_USE_LONGNAME: "true"
     ports:
       - '5672:5672'
+      - '5671:5671'
       - '15672:15672'
+      - '15671:15671'
       - '4369:4369'
+      - '25672'
+      - '25671'
     volumes:
       - "./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
+      - "./config/tls/ca.bundle.pem:/etc/rabbitmq/ca.bundle.pem"
+      - "./config/tls/mq01/mq01.rabbit.ops.crt.pem:/etc/rabbitmq/server.rabbit.ops.crt.pem:ro"
+      - "./config/tls/mq01/mq01.rabbit.ops.key.pem:/etc/rabbitmq/server.rabbit.ops.key.pem:ro"
+      - "./config/tls/client.rabbit.ops.crt.pem:/etc/rabbitmq/client.rabbit.ops.crt.pem:ro"
+      - "./config/tls/client.rabbit.ops.key.pem:/etc/rabbitmq/client.rabbit.ops.key.pem:ro"
+      - "./config/inter_node_tls.config:/etc/rabbitmq/inter_node_tls.config"
+      - "./config/rabbitmq-env.conf:/etc/rabbitmq/rabbitmq-env.conf"
 
   mq02:
     image: rabbitmq:3.8.7-management
@@ -29,9 +40,18 @@ services:
       - '5672'
       - '15672'
       - '4369'
+      - '25672'
+      - '25671'
     volumes:
       - "./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
       - "./wait-for.sh:/tmp/wait-for.sh"
+      - "./config/tls/ca.bundle.pem:/etc/rabbitmq/ca.bundle.pem"
+      - "./config/tls/mq02/mq02.rabbit.ops.crt.pem:/etc/rabbitmq/server.rabbit.ops.crt.pem:ro"
+      - "./config/tls/mq02/mq02.rabbit.ops.key.pem:/etc/rabbitmq/server.rabbit.ops.key.pem:ro"
+      - "./config/tls/client.rabbit.ops.crt.pem:/etc/rabbitmq/client.rabbit.ops.crt.pem:ro"
+      - "./config/tls/client.rabbit.ops.key.pem:/etc/rabbitmq/client.rabbit.ops.key.pem:ro"
+      - "./config/inter_node_tls.config:/etc/rabbitmq/inter_node_tls.config"
+      - "./config/rabbitmq-env.conf:/etc/rabbitmq/rabbitmq-env.conf"
 
   mq03:
     image: rabbitmq:3.8.7-management
@@ -46,7 +66,15 @@ services:
       - '5672'
       - '15672'
       - '4369'
+      - '25672'
+      - '25671'
     volumes:
       - "./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
       - "./wait-for.sh:/tmp/wait-for.sh"
-
+      - "./config/tls/ca.bundle.pem:/etc/rabbitmq/ca.bundle.pem"
+      - "./config/tls/mq03/mq03.rabbit.ops.crt.pem:/etc/rabbitmq/server.rabbit.ops.crt.pem:ro"
+      - "./config/tls/mq03/mq03.rabbit.ops.key.pem:/etc/rabbitmq/server.rabbit.ops.key.pem:ro"
+      - "./config/tls/client.rabbit.ops.crt.pem:/etc/rabbitmq/client.rabbit.ops.crt.pem:ro"
+      - "./config/tls/client.rabbit.ops.key.pem:/etc/rabbitmq/client.rabbit.ops.key.pem:ro"
+      - "./config/inter_node_tls.config:/etc/rabbitmq/inter_node_tls.config"
+      - "./config/rabbitmq-env.conf:/etc/rabbitmq/rabbitmq-env.conf"
