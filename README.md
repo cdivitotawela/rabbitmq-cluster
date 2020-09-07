@@ -10,11 +10,11 @@ Compose file creates a cluster with following architecture. Currently cluster on
 
 ## Starting Cluster
 
-Start the compose stack with `docker-compose up -d`. 
+Start the compose stack with `docker-compose up -d`.
 
 Server `mq01.rabbit.ops` is the primary server when starting. Other servers wait for the mq01 server to complete the start.
 RabbitMQ waits random time before joining the cluster with other nodes. However this method is not reliable. So `wait-for.sh` is used to pause other server
-startup until primary server start and healthy. 
+startup until primary server start and healthy.
 
 
 ## Management Web
@@ -34,7 +34,16 @@ Wait-for script
 - `PRIMARY_SERVER_USER` Admin user for the primary API server. Defaul is admin
 - `PRIMARY_SERVER_PASSWORD` Admin user password for primary API server. Defaul is rabbit
 
+
+## Inter-node TLS communication
+
+Cluster nodes communication encrypted with TLS certificates. Environment configuration file `rabbitmq-env.conf` contains additional configuration to enable
+inter-node tls communication. Configuration file `inter_node_tls.config` specify the TLS certificates for server and client. It is very important that hostname
+match CN of the server certificates. Also it is very important to configure correct depth for certificate verification. In this example depth=3 as chain has
+root CA, intermediate CA and server certificate.
+
+
 ## TODO
-- Introduce TLS certificates
+- TLS certificate for management portal
 - Python client for additional management
 - Unit tests for cluster
