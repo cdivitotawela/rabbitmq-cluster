@@ -26,6 +26,8 @@ services:
       - "./config/tls/client.rabbit.ops.key.pem:/etc/rabbitmq/client.rabbit.ops.key.pem:ro"
       - "./config/inter_node_tls.config:/etc/rabbitmq/inter_node_tls.config"
       - "./config/rabbitmq-env.conf:/etc/rabbitmq/rabbitmq-env.conf"
+      - "./config/tls/management.rabbit.ops.crt.pem:/etc/rabbitmq/management.rabbit.ops.crt.pem:ro"
+      - "./config/tls/management.rabbit.ops.key.pem:/etc/rabbitmq/management.rabbit.ops.key.pem:ro"
 
   mq02:
     image: rabbitmq:3.8.7-management
@@ -52,6 +54,8 @@ services:
       - "./config/tls/client.rabbit.ops.key.pem:/etc/rabbitmq/client.rabbit.ops.key.pem:ro"
       - "./config/inter_node_tls.config:/etc/rabbitmq/inter_node_tls.config"
       - "./config/rabbitmq-env.conf:/etc/rabbitmq/rabbitmq-env.conf"
+      - "./config/tls/management.rabbit.ops.crt.pem:/etc/rabbitmq/management.rabbit.ops.crt.pem:ro"
+      - "./config/tls/management.rabbit.ops.key.pem:/etc/rabbitmq/management.rabbit.ops.key.pem:ro"
 
   mq03:
     image: rabbitmq:3.8.7-management
@@ -78,3 +82,5 @@ services:
       - "./config/tls/client.rabbit.ops.key.pem:/etc/rabbitmq/client.rabbit.ops.key.pem:ro"
       - "./config/inter_node_tls.config:/etc/rabbitmq/inter_node_tls.config"
       - "./config/rabbitmq-env.conf:/etc/rabbitmq/rabbitmq-env.conf"
+      - "./config/tls/management.rabbit.ops.crt.pem:/etc/rabbitmq/management.rabbit.ops.crt.pem:ro"
+      - "./config/tls/management.rabbit.ops.key.pem:/etc/rabbitmq/management.rabbit.ops.key.pem:ro"
