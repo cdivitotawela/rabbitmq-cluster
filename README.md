@@ -19,7 +19,7 @@ startup until primary server start and healthy.
 
 ## Management Web
 
-Access the management ui with http://127.0.0.1:15672/ using the username and password configured in rabbitmq.conf file
+Access the management ui with http://127.0.0.1:15672/ or https://127.0.0.1:15671/ using the username and password configured in rabbitmq.conf file.
 
 ## Environment Variables
 
@@ -35,7 +35,14 @@ Wait-for script
 - `PRIMARY_SERVER_PASSWORD` Admin user password for primary API server. Defaul is rabbit
 
 
-## Inter-node TLS communication
+## TLS Certificates
+
+In order to make the solution more realistic, TLS certificates are created to emulate a real scenario. All certificates are issued by intermediate-CA and 
+intermediate-CA certificate signed by a root-CA. This requires the TLS configuration depth to be configured as 3. Both root-CA and intermediate-CA provate
+key also included in the repository.
+
+
+## Inter-node TLS Communication
 
 Cluster nodes communication encrypted with TLS certificates. Environment configuration file `rabbitmq-env.conf` contains additional configuration to enable
 inter-node tls communication. Configuration file `inter_node_tls.config` specify the TLS certificates for server and client. It is very important that hostname
@@ -43,7 +50,12 @@ match CN of the server certificates. Also it is very important to configure corr
 root CA, intermediate CA and server certificate.
 
 
+## Management/API TLS 
+
+RabbitMQ management portal is exposed over 15671 port with a TLS certificate.
+
+
 ## TODO
-- TLS certificate for management portal
+- Nginx load-balancing
 - Python client for additional management
 - Unit tests for cluster
