@@ -19,7 +19,7 @@ startup until primary server start and healthy.
 
 ## Management Web
 
-Access the management ui with http://127.0.0.1:15672/ or https://127.0.0.1:15671/ using the username and password configured in rabbitmq.conf file.
+Access the management ui with https://127.0.0.1:15671/ using the username and password configured in rabbitmq.conf file.
 
 ## Environment Variables
 
@@ -37,7 +37,7 @@ Wait-for script
 
 ## TLS Certificates
 
-In order to make the solution more realistic, TLS certificates are created to emulate a real scenario. All certificates are issued by intermediate-CA and 
+In order to make the solution more realistic, TLS certificates are created to emulate a real scenario. All certificates are issued by intermediate-CA and
 intermediate-CA certificate signed by a root-CA. This requires the TLS configuration depth to be configured as 3. Both root-CA and intermediate-CA provate
 key also included in the repository.
 
@@ -50,12 +50,11 @@ match CN of the server certificates. Also it is very important to configure corr
 root CA, intermediate CA and server certificate.
 
 
-## Management/API TLS 
+## Management/API TLS
 
-RabbitMQ management portal is exposed over 15671 port with a TLS certificate.
+RabbitMQ management portal is exposed over 15671 port with a TLS certificate. This is load-balanced service endpoint via Nginx.
 
 
 ## TODO
-- Nginx load-balancing
 - Python client for additional management
 - Unit tests for cluster
