@@ -1,1 +1,12 @@
 .idea
+tools/certificates/certs
+tools/certificates/root-ca/certs
+tools/certificates/root-ca/newcerts
+tools/certificates/root-ca/private
+tools/certificates/root-ca/index*
+tools/certificates/root-ca/serial*
+tools/certificates/intermediate-ca/certs
+tools/certificates/intermediate-ca/newcerts
+tools/certificates/intermediate-ca/private
+tools/certificates/intermediate-ca/index*
+tools/certificates/intermediate-ca/serial*
